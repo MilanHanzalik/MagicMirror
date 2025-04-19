@@ -1,0 +1,12 @@
+services:
+  magicmirror:
+    container_name: magicmirror
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config:/opt/magic_mirror/config
+      - ./modules:/opt/magic_mirror/modules
+    restart: unless-stopped
