@@ -1,0 +1,25 @@
+name: Test Self-Hosted Runner
+
+on:
+  push:
+    branches:
+      - dev # alebo tvoja hlavná branch
+
+jobs:
+  test-runner:
+    runs-on: self-hosted # spustí sa len na tvojom MagicMirror runneri
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Print Runner Info
+        run: |
+          echo "🔹 Runner is working!"
+          echo "Hostname: $(hostname)"
+          echo "User: $(whoami)"
+          echo "Date: $(date)"
+          echo "Current directory: $(pwd)"
+
+      - name: Test command
+        run: |
+          echo "✅ Runner executed a shell command successfully!"
