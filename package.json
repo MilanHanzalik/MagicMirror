@@ -38,6 +38,8 @@
 		"server": "node ./serveronly",
 		"start": "npm run start:x11",
 		"start:dev": "npm run start -- dev",
+		"start:prod": "npm run server",
+		"start:kiosk": "DISPLAY=:0 chromium-browser --kiosk --app=http://localhost:8080 --noerrdialogs --disable-infobars --disable-session-crashed-bubble",
 		"start:wayland": "WAYLAND_DISPLAY=\"${WAYLAND_DISPLAY:=wayland-1}\" ./node_modules/.bin/electron js/electron.js --enable-features=UseOzonePlatform --ozone-platform=wayland",
 		"start:wayland:dev": "npm run start:wayland -- dev",
 		"start:windows": ".\\node_modules\\.bin\\electron js\\electron.js",

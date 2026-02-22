@@ -1,0 +1,43 @@
+name: Deploy
+
+on:
+  push:
+    branches: [dev] # ak deployujes z master, zmen na [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, x64]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.14.0"
+          cache: npm
+
+      - name: Install deps
+        run: npm run install-mm
+
+      - name: Check config
+        run: npm run config:check
+
+      - name: Restart backend
+        run: |
+          pm2 describe magicmirror-server >/dev/null 2>&1 \
+            && pm2 restart magicmirror-server \
+            || pm2 start npm --name magicmirror-server -- run server
+
+      - name: Restart kiosk
+        run: |
+          pm2 describe magicmirror-kiosk >/dev/null 2>&1 \
+            && pm2 restart magicmirror-kiosk \
+            || pm2 start npm --name magicmirror-kiosk -- run start:kiosk
+
+      - name: Save PM2
+        run: pm2 save
